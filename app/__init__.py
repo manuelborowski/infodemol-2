@@ -42,10 +42,11 @@ flask_app.config.from_pyfile('config.py')
 # V1.0: started from timeslots-generic and integrated elements from infodemol
 # V1.1: small error in commit
 # V1.2: small error in commit
+# V1.3: small update
 
 @flask_app.context_processor
 def inject_defaults():
-    return dict(version='V1.2', title=flask_app.config['HTML_TITLE'], site_name=flask_app.config['SITE_NAME'])
+    return dict(version='V1.3', title=flask_app.config['HTML_TITLE'], site_name=flask_app.config['SITE_NAME'])
 
 
 #  enable logging
