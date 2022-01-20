@@ -39,11 +39,12 @@ flask_app.config.from_pyfile('config.py')
 # V0.17: update in logging: add correct app name
 # V0.18: update in title of registration form
 # V0.19: update in favicon of registration form
-
+# V1.0: started from timeslots-generic and integrated elements from infodemol
+# V1.1: small error in commit
 
 @flask_app.context_processor
 def inject_defaults():
-    return dict(version='V0.19', title=flask_app.config['HTML_TITLE'], site_name=flask_app.config['SITE_NAME'])
+    return dict(version='V1.1', title=flask_app.config['HTML_TITLE'], site_name=flask_app.config['SITE_NAME'])
 
 
 #  enable logging
