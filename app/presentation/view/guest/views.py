@@ -1,11 +1,9 @@
-from flask import redirect, render_template, request, url_for, jsonify, session, copy_current_request_context, request
-from flask_login import login_required, current_user
+from flask import render_template, request
 from . import guest
-from app import log, socketio, admin_required
-from flask_socketio import emit, join_room, leave_room, close_room, rooms, disconnect
-from app.application import guest as mguest, email as memail, reservation as mreservation
+from app import log, socketio
+from app.application import email as memail, reservation as mreservation, enter as menter
 import json, re, urllib
-from app.presentation.view import update_available_timeslots, false, true, null, prepare_registration_form
+from app.presentation.view import prepare_registration_form, prepare_enter_form
 
 
 @guest.route('/register', methods=['POST', 'GET'])
@@ -46,6 +44,19 @@ def register_save(form_data):
                 return render_template('guest/messages.html', type='could-not-register', message=e)
             return render_template('guest/messages.html', type='could-not-register')
     except Exception as e:
+        return render_template('guest/messages.html', type='unknown-error', message=e)
+
+
+@guest.route('/enter', methods=['POST', 'GET'])
+def enter():
+    try:
+        code = request.args['code'] if 'code' in request.args else None
+        ret = prepare_enter_form(code)
+        if ret.result == ret.Result.E_COULD_NOT_ENTER:
+            return render_template('guest/messages.html', type='could-not-enter')
+        return render_template('guest/enter.html', config_data=ret.ret)
+    except Exception as e:
+        log.error(f'could not register {request.args}: {e}')
         return render_template('guest/messages.html', type='unknown-error', message=e)
 
 

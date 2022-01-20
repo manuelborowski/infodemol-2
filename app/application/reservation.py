@@ -1,4 +1,4 @@
-from app.application.util import datetime_to_dutch_datetime_string, formiodate_to_datetime, datetime_to_formiodate
+from app.application.utils import datetime_to_dutch_datetime_string, formiodate_to_datetime, datetime_to_formiodate
 from app.application import guest as maguest
 from app.data import utils as mutils, guest as mguest, settings as msettings, timeslot_configuration as mtc
 from app import log

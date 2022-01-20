@@ -12,6 +12,26 @@ def get_configuration_setting(setting):
 def set_configuration_setting(setting, value):
     msettings.set_configuration_setting(setting, value)
 
+def get_embedded_video_template():
+    return msettings.get_configuration_setting('embedded-video-template')
+
+
+def get_floating_video_template():
+    return msettings.get_configuration_setting('floating-video-template')
+
+
+def get_floating_pdf_template():
+    return msettings.get_configuration_setting('floating-pdf-template')
+
+
+def get_floating_document_template():
+    return msettings.get_configuration_setting('floating-document-template')
+
+
+def get_link_template():
+    return msettings.get_configuration_setting('link-template')
+
+
 
 def set_setting_topic(settings):
     try:

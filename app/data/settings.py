@@ -59,6 +59,16 @@ default_configuration_settings = {
     'register-mail-ack-subject-template': ('', Settings.SETTING_TYPE.E_STRING),
     'register-mail-ack-content-template': ('', Settings.SETTING_TYPE.E_STRING),
 
+    'enter-template': ('', Settings.SETTING_TYPE.E_STRING),
+    'enter-content-json': ('', Settings.SETTING_TYPE.E_STRING),
+    'enable-enter': (False, Settings.SETTING_TYPE.E_BOOL),
+
+    'embedded-video-template': ('', Settings.SETTING_TYPE.E_STRING),
+    'floating-video-template': ('', Settings.SETTING_TYPE.E_STRING),
+    'floating-pdf-template': ('', Settings.SETTING_TYPE.E_STRING),
+    'floating-document-template': ('', Settings.SETTING_TYPE.E_STRING),
+    'link-template': ('', Settings.SETTING_TYPE.E_STRING),
+
     'email-task-interval': (10, Settings.SETTING_TYPE.E_INT),
     'emails-per-minute': (30, Settings.SETTING_TYPE.E_INT),
     'email-send-max-retries': (2, Settings.SETTING_TYPE.E_INT),

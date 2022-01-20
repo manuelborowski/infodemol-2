@@ -8,7 +8,8 @@
           integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
     <link rel='stylesheet' href='https://cdn.form.io/formiojs/formio.full.min.css'>
     <link href="{{ url_for('static', filename = 'css/main.css') }}" rel="stylesheet">
-    <link rel="shortcut icon" href="{{ url_for('static', filename='img/favicon.ico') }}">
+
+    <link rel="shortcut icon" href="{{ url_for('static', filename='img/heliks-favicon.png') }}">
     {{ JSGlue.include() }}
     <style>
         html {
@@ -19,12 +20,94 @@
         body {
             height: 100%;
             margin: 0;
-            background-color: #ffc107b8;
+            background-color: #f6f9ec;
+        }
+
+        .bg-success {
+            background-color: #9cc31b !important;
+        }
+
+        .formio-component-header-container {
+            border-style: solid;
+            border-color: #018188;
+            border-width: thick;
+            border-radius: 20px;
+            background-color: white;
+            padding: 20px;
+            color: #038289;
+            margin-bottom: 5px;
+        }
+
+        .tabs-component {
+            border-style: solid;
+            border-radius: 25px;
+            border-color: #038288;
+            border-width: thick;
+        }
+
+        .tabs-component .nav-link {
+            color: #038289;
+            font-weight: bolder;
+            font-size: larger;
+        }
+
+        .tabs-component .card .card-header {
+            background-color: #9dc31c !important;
+            border-radius: 20px;
+
+        }
+
+        .tabs-component .card {
+            border-radius: 20px;
+        }
+
+        .guest-registration-box .card .card-header {
+            border-radius: 20px;
+        }
+
+        .guest-registration-box .card {
+            border-radius: 20px;
+        }
+
+        figure {
+            display: table;
+        }
+
+        figcaption {
+            display: table-caption;
+            caption-side: bottom;
+        }
+
+        .floating-item-css {
+            display: inline-flex;
+            margin: 5px;
+            padding: 5px;
+            border-style: solid;
+            border-color: #9bc219;
+            border-radius: 20px;
+        }
+
+        .mfp-iframe-holder .mfp-content {
+            width: 90%;
+            max-width: 100%;
+            max-height: 90%;
+        }
+
+        .container-fluid {
+            padding-left: 5%;
+            padding-right: 5%;
+        }
+
+        .survey-title-bold .col-form-label {
+            font-weight: bold;
         }
     </style>
 </head>
 <body>
-<img src="{{ url_for('static', filename='img/LogoCampus.png') }}" width="200" height="200" align="right"></a>
+<div class="container-fluid" style="height:100px;">
+    <img src="{{ url_for('static', filename='img/heliks-logo-kleur.png') }}" height="100" style="padding-bottom: 20px;"
+         align="center"></a>
+</div>
 {% block body %}
 {% endblock %}
 {% block footer %}

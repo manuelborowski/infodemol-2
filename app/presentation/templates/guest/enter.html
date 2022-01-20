@@ -1,0 +1,17 @@
+{% extends "guest/base.html" %}
+
+{% block body %}
+    {{ super() }}
+    <div class="content-section center container">
+        <div id="register-form"></div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+    <script>
+        let config_data = {{ config_data | tojson }};
+        let registration_form = config_data.template;
+    </script>
+    <script type="module"> {% include "guest/enter.js" %}</script>
+{% endblock %}

@@ -1,4 +1,4 @@
-from app.application.util import datetime_to_dutch_datetime_string, formiodate_to_datetime, datetime_to_formiodate
+from app.application.utils import datetime_to_dutch_datetime_string, formiodate_to_datetime, datetime_to_formiodate
 from app.data import settings as msettings, guest as mguest
 from app import email, log, email_scheduler, flask_app
 import datetime, time, re, sys
@@ -33,15 +33,29 @@ def send_register_ack(**kwargs):
         email_content = msettings.get_configuration_setting('register-mail-ack-content-template')
 
         timeslot = datetime_to_dutch_datetime_string(guest.timeslot)
+        physical_date = datetime.datetime(2022, 2, 8, 23, 59)
 
         email_subject = email_subject.replace('{{TAG_TIMESLOT}}', timeslot)
-        email_content = email_content.replace('{{TAG_TIMESLOT}}', timeslot)
 
-        url_tag = re.search('{{.*\|TAG_UPDATE_URL}}', email_content)
+        if guest.timeslot <= physical_date:
+            email_content = re.sub('{{TAG_1_START}}', '', email_content)
+            email_content = re.sub('{{TAG_1_STOP}}', '', email_content)
+            email_content = email_content.replace('{{TAG_TIMESLOT}}', timeslot)
+        else:
+            email_content = re.sub('{{TAG_1_START}}.*{{TAG_1_STOP}}', '', email_content)
+
+        url_tag = re.search('{{[^}]*\|TAG_UPDATE_URL}}', email_content)
         url_text = url_tag.group(0).split('|')[0].split('{{')[1]
         url = f'{msettings.get_configuration_setting("base-url")}/register?code={guest.code}'
         url_template = f'<a href={url}>{url_text}</a>'
-        email_content = re.sub('{{.*\|TAG_UPDATE_URL}}', url_template, email_content)
+        email_content = re.sub('{{[^}]*\|TAG_UPDATE_URL}}', url_template, email_content)
+
+        url_tag = re.search('{{[^}]*\|TAG_ENTER_URL}}', email_content)
+        url_text = url_tag.group(0).split('|')[0].split('{{')[1]
+        url = f'{msettings.get_configuration_setting("base-url")}/enter'
+        url_template = f'<a href={url}>{url_text}</a>'
+        email_content = re.sub('{{[^}]*\|TAG_ENTER_URL}}', url_template, email_content)
+
         log.info(f'"{email_subject}" to {guest.email}')
         ret = send_email(guest.email, email_subject, email_content)
         if ret:

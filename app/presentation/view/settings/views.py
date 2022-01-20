@@ -105,6 +105,14 @@ settings_formio = \
                 "input": true
               },
               {
+                "label": "Gasten worden toegelaten",
+                "tableView": false,
+                "defaultValue": false,
+                "key": "enable-enter",
+                "type": "checkbox",
+                "input": true
+              },
+              {
                 "label": "Columns",
                 "columns": [
                   {
@@ -236,6 +244,62 @@ settings_formio = \
                 "tableView": true,
                 "persistent": false,
                 "key": "register-mail-ack-content-template",
+                "type": "textarea",
+                "input": true
+              },
+              {
+                "label": "Gast verwelkoming template",
+                "autoExpand": false,
+                "tableView": true,
+                "key": "enter-template",
+                "type": "textarea",
+                "input": true
+              },
+              {
+                "label": "Gast pagina items (json)",
+                "autoExpand": false,
+                "tableView": true,
+                "key": "enter-content-json",
+                "type": "textarea",
+                "input": true
+              },
+              {
+                "label": "Embedded video template",
+                "autoExpand": false,
+                "tableView": true,
+                "key": "embedded-video-template",
+                "type": "textarea",
+                "input": true
+              },
+              {
+                "label": "Floating video template",
+                "autoExpand": false,
+                "tableView": true,
+                "key": "floating-video-template",
+                "type": "textarea",
+                "input": true
+              },
+              {
+                "label": "Floating PDF template",
+                "autoExpand": false,
+                "tableView": true,
+                "key": "floating-pdf-template",
+                "type": "textarea",
+                "input": true
+              },
+              {
+                "label": "Floating document template",
+                "autoExpand": false,
+                "tableView": true,
+                "key": "floating-document-template",
+                "type": "textarea",
+                "input": true
+              },
+              {
+                "label": "Link template",
+                "autoExpand": false,
+                "tableView": true,
+                "key": "link-template",
                 "type": "textarea",
                 "input": true
               }
