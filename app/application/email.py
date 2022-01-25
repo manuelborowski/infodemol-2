@@ -41,8 +41,11 @@ def send_register_ack(**kwargs):
             email_content = re.sub('{{TAG_1_START}}', '', email_content)
             email_content = re.sub('{{TAG_1_STOP}}', '', email_content)
             email_content = email_content.replace('{{TAG_TIMESLOT}}', timeslot)
+            email_content = re.sub('{{TAG_2_START}}.*{{TAG_2_STOP}}', '', email_content)
         else:
             email_content = re.sub('{{TAG_1_START}}.*{{TAG_1_STOP}}', '', email_content)
+            email_content = re.sub('{{TAG_2_START}}', '', email_content)
+            email_content = re.sub('{{TAG_2_STOP}}', '', email_content)
 
         url_tag = re.search('{{[^}]*\|TAG_UPDATE_URL}}', email_content)
         url_text = url_tag.group(0).split('|')[0].split('{{')[1]
