@@ -13,11 +13,10 @@ def prepare_reservation(code=None):
             'email': '',
             'full_name': '',
             'child_name': '',
-            'town': '',
-            'current_school': '',
-            'current_grade': '',
             'reservation-code': 'new',
             }
+            misc_config = json.loads(msettings.get_configuration_setting('import-misc-fields'))
+            empty_values.update({c['veldnaam']: '' for c in misc_config})
             ret = {'default_values': empty_values,
                    'template': json.loads(msettings.get_configuration_setting('register-template')),
                    'available_timeslots': get_available_timeslots(),

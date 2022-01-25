@@ -1,5 +1,5 @@
 from app.application import reservation as mreservation, settings as msettings, enter as menter, utils as mutils
-import re
+import re, json
 
 
 false = False
@@ -30,12 +30,11 @@ def update_template(template, new):
     update_header['hidden'] = new
     child_name = search_component(template, 'child_name')
     child_name['disabled'] = not new
-    town = search_component(template, 'town')
-    town['disabled'] = not new
-    current_school = search_component(template, 'current_school')
-    current_school['disabled'] = not new
-    current_grade = search_component(template, 'current_grade')
-    current_grade['disabled'] = not new
+
+    misc_config = json.loads(msettings.get_configuration_setting('import-misc-fields'))
+    for c in misc_config:
+        misc_field = search_component(template, c['veldnaam'])
+        misc_field['disabled'] = not new
     email = search_component(template, 'email')
     email['disabled'] = not new
     show_phone = msettings.get_configuration_setting('import-phone-field') != ''
