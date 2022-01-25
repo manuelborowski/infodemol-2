@@ -16,7 +16,7 @@ def ajax(table_configuration):
 
 def update(table_configuration, fields):
     for field in fields:
-        extra_field = {'name': field, 'data': field, 'width': '15%'}
+        extra_field = {'name': field['overzicht']['naam'], 'data': field['veldnaam'], 'width': field['overzicht']['kolombreedte']}
         if extra_field in table_configuration['template']: continue
         table_configuration['template'].append(extra_field)
 

@@ -17,8 +17,7 @@ import json
 @supervisor_required
 def show():
     misc_config = json.loads(msettings.get_configuration_setting('import-misc-fields'))
-    misc_fields = [c['veldnaam'] for c in misc_config]
-    base_multiple_items.update(table_configuration, misc_fields)
+    base_multiple_items.update(table_configuration, misc_config)
     return base_multiple_items.show(table_configuration)
 
 
@@ -27,8 +26,7 @@ def show():
 @supervisor_required
 def table_ajax():
     misc_config = json.loads(msettings.get_configuration_setting('import-misc-fields'))
-    misc_fields = [c['veldnaam'] for c in misc_config]
-    base_multiple_items.update(table_configuration, misc_fields)
+    base_multiple_items.update(table_configuration, misc_config)
     return base_multiple_items.ajax(table_configuration)
 
 
@@ -99,8 +97,8 @@ def get_form(extra_fields, default_values={}):
         }
     }
     for field in extra_fields:
-        form['fields'].append(field)
-        form['config'][field] = {'label': field, 'default': ''}
+        form['fields'].append(field['veldnaam'])
+        form['config'][field['veldnaam']] = {'label': field['overzicht']['naam'], 'default': ''}
     if default_values:
         for field in form['fields']:
             form['config'][field]['default'] = default_values[field]
@@ -110,22 +108,21 @@ def get_form(extra_fields, default_values={}):
 def get_misc_fields(extra_fields, form):
     misc_field = {}
     for field in extra_fields:
-        if field in form:
-            misc_field[field] = form[field]
+        if field['veldnaam'] in form:
+            misc_field[field['veldnaam']] = form[field['veldnaam']]
     return misc_field
 
 
 def item_edit(done=False, id=-1):
     try:
         misc_config = json.loads(msettings.get_configuration_setting('import-misc-fields'))
-        extra_fields = [c['veldnaam'] for c in misc_config]
         common_details = tables.prepare_item_config_for_view(table_configuration, 'edit')
         if done:
-            misc_field = get_misc_fields(extra_fields, request.form)
+            misc_field = get_misc_fields(misc_config, request.form)
             guest = mguest.get_first_guest(id=id)
             guest = mguest.update_guest(guest, full_name=request.form['full_name'], email=request.form['email'],
                                         child_name=request.form['child_name'], phone=request.form['phone'],
-                                        misc_field=json.dumps(misc_field))
+                                        misc_field=misc_field)
             return redirect(url_for('reservation.show'))
         else:
             chbx_id_list = request.form.getlist('chbx')
@@ -133,7 +130,7 @@ def item_edit(done=False, id=-1):
                 id = int(chbx_id_list[0])  # only the first one can be edited
             if id > -1:
                 guest = mguest.get_first_guest(id=id)
-                form = get_form(extra_fields, guest.flat())
+                form = get_form(misc_config, guest.flat())
                 common_details['item_id'] = id
             else:
                 return redirect(url_for('reservation.show'))
@@ -147,17 +144,16 @@ def item_edit(done=False, id=-1):
 def item_add(done=False):
     try:
         misc_config = json.loads(msettings.get_configuration_setting('import-misc-fields'))
-        extra_fields = [c['veldnaam'] for c in misc_config]
         if done:
-            misc_field = get_misc_fields(extra_fields, request.form)
+            misc_field = get_misc_fields(misc_config, request.form)
             guest = maguest.add_guest(full_name=request.form['full_name'], email=request.form['email'])
             guest = mguest.update_guest(guest, child_name=request.form['child_name'], phone=request.form['phone'],
-                                        misc_field=json.dumps(misc_field))
+                                        misc_field=misc_field)
             log.info(f'add: {guest.email}')
             return redirect(url_for('reservation.show'))
         else:
             common_details = tables.prepare_item_config_for_view(table_configuration, 'add')
-            form = get_form(extra_fields)
+            form = get_form(misc_config)
             return render_template('reservation/reservation.html', form_details=form,
                                    common_details=common_details)
     except Exception as e:

@@ -30,6 +30,12 @@ def update_template(template, new):
     update_header['hidden'] = new
     child_name = search_component(template, 'child_name')
     child_name['disabled'] = not new
+    town = search_component(template, 'town')
+    town['disabled'] = not new
+    current_school = search_component(template, 'current_school')
+    current_school['disabled'] = not new
+    current_grade = search_component(template, 'current_grade')
+    current_grade['disabled'] = not new
     email = search_component(template, 'email')
     email['disabled'] = not new
     show_phone = msettings.get_configuration_setting('import-phone-field') != ''

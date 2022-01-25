@@ -1,13 +1,13 @@
 from app.data.models import TimeslotConfiguration
-from sqlalchemy import not_
-from app.data import utils as mutils
 from app import log, db
-import datetime, random, string, sys
+import sys, json
 
 
-def add_timeslot_configuration_bulk(date, length, nbr_of_timeslots, items_per_timeslot):
+def add_timeslot_configuration_bulk(date, length, nbr_of_timeslots, items_per_timeslot, misc_field):
     try:
-        timeslot_configuration = TimeslotConfiguration(date=date, length=length, nbr_of_timeslots=nbr_of_timeslots, items_per_timeslot=items_per_timeslot)
+        timeslot_configuration = TimeslotConfiguration(date=date, length=length, nbr_of_timeslots=nbr_of_timeslots,
+                                                       items_per_timeslot=items_per_timeslot,
+                                                       misc_field=json.dumps(misc_field))
         db.session.add(timeslot_configuration)
     except Exception as e:
         log.error(f'{sys._getframe().f_code.co_name}: {e}')
@@ -20,9 +20,10 @@ def add_timeslot_configuration_commit():
         log.error(f'{sys._getframe().f_code.co_name}: {e}')
 
 
-def add_timeslot_configuration(date, length, nbr_of_timeslots, items_per_timeslot):
+def add_timeslot_configuration(date, length, nbr_of_timeslots, items_per_timeslot, misc_field=None):
     try:
-        add_timeslot_configuration_bulk(date=date, length=length, nbr_of_timeslots=nbr_of_timeslots, items_per_timeslot=items_per_timeslot)
+        add_timeslot_configuration_bulk(date=date, length=length, nbr_of_timeslots=nbr_of_timeslots,
+                                        items_per_timeslot=items_per_timeslot, misc_field=misc_field)
         add_timeslot_configuration_commit()
     except Exception as e:
         log.error(f'{sys._getframe().f_code.co_name}: {e}')

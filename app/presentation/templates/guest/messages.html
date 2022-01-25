@@ -23,14 +23,7 @@
 
                 {% if type =='register-ok' %}
                     <div class="alert alert-success" role="alert">
-                        <h4 class="alert-heading">Registratie/aanpassing is een success</h4>
-                        <h5>Je registratie is succesvol voltooid!</h5>
-                        <br>
-                        <h5>Binnen enkele minuten ontvang je een bevestigingsmail met de nodige informatie. Mocht je deze mail niet ontvangen hebben, check dan de map ‘ongewenste mail’.</h5>
-                        <h5>Wij ontmoeten je in ieder geval graag op {{ info['timeslot'] }}.</h5>
-                        <br>
-                        <h5>Tot gauw!</h5>
-                        </p>
+                        {{ info | safe }}
                     </div>
                 {% endif %}
 
@@ -38,7 +31,6 @@
                     <div class="alert alert-success" role="alert">
                         <h4 class="alert-heading">Reservatie is verwijderd</h4>
                         <h5>U mag dit venster sluiten.</h5>
-                        </p>
                     </div>
                 {% endif %}
 

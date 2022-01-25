@@ -4,9 +4,9 @@ from app import log, db
 import sys, json
 
 
-def add_guest_bulk(full_name=None, child_name=None, phone=None, email=None, code=None, misc_field=None):
+def add_guest_bulk(full_name=None, child_name=None, phone=None, email=None, code=None):
     try:
-        guest = Guest(full_name=full_name, child_name=child_name, phone=phone, email=email, code=code, misc_field=misc_field)
+        guest = Guest(full_name=full_name, child_name=child_name, phone=phone, email=email, code=code)
         db.session.add(guest)
         return guest
     except Exception as e:
@@ -21,9 +21,9 @@ def guest_bulk_commit():
         log.error(f'{sys._getframe().f_code.co_name}: {e}')
 
 
-def add_guest(full_name=None, child_name=None,phone=None, email=None, code=None, misc_field=None):
+def add_guest(full_name=None, child_name=None,phone=None, email=None, code=None):
     try:
-        guest = add_guest_bulk(full_name=full_name, child_name=child_name, phone=phone, email=email, code=code, misc_field=misc_field)
+        guest = add_guest_bulk(full_name=full_name, child_name=child_name, phone=phone, email=email, code=code)
         guest_bulk_commit()
         return guest
     except Exception as e:
@@ -79,7 +79,8 @@ def get_guest_count(timeslot=None):
 
 
 def update_guest(guest, full_name=None, child_name=None, phone=None, email=None, timeslot=None, note=None, misc_field=None):
-    guest = update_guest_bulk(guest, full_name=full_name, child_name=child_name, phone=phone, email=email, timeslot=timeslot, note=note, misc_field=misc_field)
+    guest = update_guest_bulk(guest, full_name=full_name, child_name=child_name, phone=phone, email=email,
+                              timeslot=timeslot, note=note, misc_field=misc_field)
     guest_bulk_commit()
     return guest
 
@@ -99,7 +100,7 @@ def update_guest_bulk(guest, full_name=None, child_name=None, phone=None, email=
         if note is not None:
             guest.note = note
         if misc_field is not None:
-            guest.misc_field = misc_field
+            guest.misc_field = json.dumps(misc_field)
         return guest
     except Exception as e:
         log.error(f'{sys._getframe().f_code.co_name}: {e}')

@@ -283,12 +283,17 @@ class TimeslotConfiguration(db.Model):
     nbr_of_timeslots = db.Column(db.Integer, default=20)
     items_per_timeslot = db.Column(db.Integer, default=8)
     active = db.Column(db.Boolean, default=True)
+    misc_field = db.Column(db.Text)
 
     def flat(self):
-        return {
+        flat = {
             'id': self.id,
-            'active': self.active,
             'date': datetime_to_dutch_datetime_string(self.date),
-            'overwrite_row_color': self.row_color(),
+            'length': self.length,
+            'nbr_of_timeslots': self.nbr_of_timeslots,
+            'items_per_timeslot': self.items_per_timeslot,
+            'active': self.active,
         }
-
+        misc_field = json.loads(self.misc_field) if self.misc_field else ''
+        flat.update(misc_field)
+        return flat

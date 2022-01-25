@@ -13,6 +13,9 @@ def prepare_reservation(code=None):
             'email': '',
             'full_name': '',
             'child_name': '',
+            'town': '',
+            'current_school': '',
+            'current_grade': '',
             'reservation-code': 'new',
             }
             ret = {'default_values': empty_values,
@@ -61,10 +64,10 @@ def add_or_update_reservation(data, suppress_send_ack_email=False):
                 return RegisterResult(RegisterResult.Result.E_TIMESLOT_FULL, ret)
             misc_config = json.loads(msettings.get_configuration_setting('import-misc-fields'))
             extra_fields = [c['veldnaam'] for c in misc_config]
-            extra_field = {f: '' for f in extra_fields}
+            extra_field = {f: data[f] for f in extra_fields}
             guest = maguest.add_guest(full_name=data['full_name'].strip(), email=data['email'].strip())
             guest = mguest.update_guest(guest, child_name=data['child_name'].strip(), phone=data['phone'].strip(),
-                                        timeslot=timeslot, misc_field=json.dumps(extra_field))
+                                        timeslot=timeslot, misc_field=extra_field)
         else:
             guest = mguest.get_first_guest(code=code)
             if timeslot != guest.timeslot and not check_requested_timeslot(timeslot):
@@ -74,7 +77,10 @@ def add_or_update_reservation(data, suppress_send_ack_email=False):
         if guest and not suppress_send_ack_email:
             guest.set_email_send_retry(0)
             guest.set_ack_email_sent(False)
-        return RegisterResult(RegisterResult.Result.E_OK, guest.flat())
+        register_ack_template = msettings.get_configuration_setting('register-ack-template')
+        timeslot = datetime_to_dutch_datetime_string(guest.timeslot)
+        register_ack_template = register_ack_template.replace('{{TAG_TIMESLOT}}', timeslot)
+        return RegisterResult(RegisterResult.Result.E_OK, register_ack_template)
     except Exception as e:
         log.error(f'{sys._getframe().f_code.co_name}: {e}')
     return RegisterResult(RegisterResult.Result.E_COULD_NOT_REGISTER)
@@ -136,6 +142,7 @@ def get_available_timeslots(default_date=None):
         timeslots = []
         timeslot_configs = mtc.get_timeslot_configurations()
         for timeslot_config in timeslot_configs:
+            flat = timeslot_config.flat()
             date = timeslot_config.date
             for i in range(timeslot_config.nbr_of_timeslots):
                 nbr_guests = mguest.get_guest_count(date)
@@ -143,8 +150,13 @@ def get_available_timeslots(default_date=None):
                 default_flag = default_date and date == default_date
                 if default_flag:
                     available += 1
+                label = f"{datetime_to_dutch_datetime_string(date)}"
+                if flat['show_items_left']:
+                    label = f"({available}) {label}"
+                if flat['label'] != '':
+                    label = f"{label} ({flat['label']})"
                 timeslots.append({
-                    'label':  f"({available}) {datetime_to_dutch_datetime_string(date)}",
+                    'label':  label,
                     'value': datetime_to_formiodate(date),
                     'available': available,
                     'default': default_flag,

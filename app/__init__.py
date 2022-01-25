@@ -43,10 +43,13 @@ flask_app.config.from_pyfile('config.py')
 # V1.1: small error in commit
 # V1.2: small error in commit
 # V1.3: small update
+# V1.4: updated settings -> extra-fields to support miscellaneous fields.
+# Webform that displays registration result is made editable via settings.
+# updated timeslot configuration to support extra fields and layout in web registration form
 
 @flask_app.context_processor
 def inject_defaults():
-    return dict(version='V1.3', title=flask_app.config['HTML_TITLE'], site_name=flask_app.config['SITE_NAME'])
+    return dict(version='V1.4', title=flask_app.config['HTML_TITLE'], site_name=flask_app.config['SITE_NAME'])
 
 
 #  enable logging
