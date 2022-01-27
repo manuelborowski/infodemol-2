@@ -48,11 +48,12 @@ flask_app.config.from_pyfile('config.py')
 # updated timeslot configuration to support extra fields and layout in web registration form
 # V1.5: bugfix: removed hardcoded misc fields
 # V1.6: email-confirmation: added another tag to distinguish between online and physical sessions;
+# V1.7: add trailing u after time
 
 
 @flask_app.context_processor
 def inject_defaults():
-    return dict(version='V1.6', title=flask_app.config['HTML_TITLE'], site_name=flask_app.config['SITE_NAME'])
+    return dict(version='V1.7', title=flask_app.config['HTML_TITLE'], site_name=flask_app.config['SITE_NAME'])
 
 
 #  enable logging

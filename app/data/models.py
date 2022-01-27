@@ -9,7 +9,7 @@ from babel.dates import get_day_names, get_month_names
 # woensdag 24 februari om 14 uur
 def datetime_to_dutch_datetime_string(date):
     try:
-        date_string = f'{get_day_names(locale="nl")[date.weekday()]} {date.day} {get_month_names(locale="nl")[date.month]} om {date.strftime("%H.%M")}'
+        date_string = f'{get_day_names(locale="nl")[date.weekday()]} {date.day} {get_month_names(locale="nl")[date.month]} om {date.strftime("%H.%M")}u'
         return date_string
     except:
         return ''
